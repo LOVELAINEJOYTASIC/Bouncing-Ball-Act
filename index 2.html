@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>obri & lablin</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffffff; /* Set your desired background color */
+        }
+
+        canvas {
+            border: 1px solid whitesmoke;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bouncing Ball sheeesh</h1>
+    <canvas id="canvas" width="600" height="600"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const balls = [
+            {
+                x: canvas.width / 3,
+                y: canvas.height / 2,
+                radius: 20,
+                velocityX: 5,
+                velocityY: 5,
+                color: 'blue',
+            },
+            {
+                x: (canvas.width / 3) * 2,
+                y: canvas.height / 2,
+                radius: 20,
+                velocityX: -5,
+                velocityY: -5,
+                color: 'red',
+            },
+            {
+                x: canvas.width / 2,
+                y: canvas.height / 3,
+                radius: 20,
+                velocityX: 3,
+                velocityY: -4,
+                color: 'green',
+            },
+            // Add more balls below
+            {
+                x: canvas.width / 4,
+                y: canvas.height / 4,
+                radius: 20,
+                velocityX: 4,
+                velocityY: -3,
+                color: 'purple',
+            },
+            {
+                x: (canvas.width / 4) * 3,
+                y: canvas.height / 4,
+                radius: 20,
+                velocityX: -3,
+                velocityY: 4,
+                color: 'orange',
+            },
+        ];
+
+        const backgroundImage = new Image();
+        backgroundImage.src = 'https://i.pinimg.com/originals/40/91/d7/4091d7aa1fcde08c173a4786573cac03.gif'; // Replace with the path to your image
+
+        function drawBall(ball) {
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 5);
+            ctx.fillStyle = ball.color;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function moveBall(ball) {
+            ball.x += ball.velocityX;
+            ball.y += ball.velocityY;
+        }
+
+        function bounceBall(ball) {
+            if (ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height) {
+                ball.velocityY = -ball.velocityY;
+            }
+
+            if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) {
+                ball.velocityX = -ball.velocityX;
+            }
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function drawBackground() {
+            // Draw the background image
+            ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+        }
+
+        function update() {
+            clearCanvas();
+            drawBackground();
+
+            balls.forEach((ball) => {
+                moveBall(ball);
+                bounceBall(ball);
+                drawBall(ball);
+            });
+
+            requestAnimationFrame(update);
+        }
+
+        update();
+    </script>
+</body>
+</html>
